@@ -4,7 +4,7 @@ const { Linter } = require("eslint");
 const config = [
   {
     languageOptions: {
-      parser: require("babel-eslint"),
+      parser: require("@babel/eslint-parser"),
       parserOptions: {
         ecmaVersion: 2021,
         sourceType: "module",
@@ -20,9 +20,15 @@ const config = [
       "react/prop-types": "off",
       "semi":"error"
     },
-    plugins: {
-      react: require("eslint-plugin-react"),
-    },
+    plugins: [
+      require("eslint-plugin-react"),
+      require("eslint-plugin-jest")
+    ],
+    extends: [
+      "eslint:recommended", 
+      "plugin:react/recommended", 
+      "plugin:jest/recommended"
+    ],
     settings: {
       react: {
         version: "detect",  // Detecta la versión de React automáticamente

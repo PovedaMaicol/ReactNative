@@ -1,5 +1,8 @@
-{
+import 'dotenv/config'
+
+export default {
   "expo": {
+    "newArchEnabled": true,
     "name": "rate-repository-app",
     "slug": "rate-repository-app",
     "version": "1.0.0",
@@ -21,6 +24,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      ENV: process.env.ENV, // Pasar la variable de entorno aquí
+    },
   }
 }

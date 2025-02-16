@@ -3,6 +3,15 @@
 import { Platform } from "react-native";
 
 const theme = {
+
+  text: {
+    color: Platform.select({
+      android: 'green',
+      ios: 'blue',
+      default: 'black',
+    }),
+  },
+
     colors: {
       textPrimary: '#24292e',
       textSecondary: '#586069',
@@ -19,6 +28,7 @@ const theme = {
         default: 'System',
       }),
     },
+    
     fontWeights: {
       normal: '400',
       bold: '700',

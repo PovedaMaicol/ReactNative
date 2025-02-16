@@ -1,16 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, View, StyleSheet, Text, Image, SafeAreaView } from 'react-native';
+// import useRepositories from '../src/hooks/useRepositories';
 
-// FlatList: Un componente optimizado para listas largas en React Native.
-// // View: Contenedor básico en React Native, similar a una div en HTML.
-// StyleSheet: Utilizado para definir estilos en React Native.
-// Text: Para mostrar texto.
-// Image: Para mostrar imágenes.
-// // SafeAreaView: Asegura que el contenido no se superponga a áreas como la barra de estado en iOS.
-// 
+import useRepositoriesGql from '../src/hooks/useRepositoriesGQL';
 
-
-// esta linea se usa para crear estilos y luego aplicar a los componentes
 const styles = StyleSheet.create({
   separator: {
     height: 10,
@@ -78,52 +71,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const repositories = [
-  {
-    id: 'jaredpalmer.formik',
-    fullName: 'jaredpalmer/formik',
-    description: 'Build forms in React, without the tears',
-    language: 'TypeScript',
-    forksCount: 1589,
-    stargazersCount: 21553,
-    ratingAverage: 88,
-    reviewCount: 4,
-    ownerAvatarUrl: 'https://avatars2.githubusercontent.com/u/4060187?v=4',
-  },
-  {
-    id: 'rails.rails',
-    fullName: 'rails/rails',
-    description: 'Ruby on Rails',
-    language: 'Ruby',
-    forksCount: 18349,
-    stargazersCount: 45377,
-    ratingAverage: 100,
-    reviewCount: 2,
-    ownerAvatarUrl: 'https://avatars1.githubusercontent.com/u/4223?v=4',
-  },
-  {
-    id: 'django.django',
-    fullName: 'django/django',
-    description: 'The Web framework for perfectionists with deadlines.',
-    language: 'Python',
-    forksCount: 21015,
-    stargazersCount: 48496,
-    ratingAverage: 73,
-    reviewCount: 5,
-    ownerAvatarUrl: 'https://avatars2.githubusercontent.com/u/27804?v=4',
-  },
-  {
-    id: 'reduxjs.redux',
-    fullName: 'reduxjs/redux',
-    description: 'Predictable state container for JavaScript apps',
-    language: 'TypeScript',
-    forksCount: 13902,
-    stargazersCount: 52869,
-    ratingAverage: 0,
-    reviewCount: 0,
-    ownerAvatarUrl: 'https://avatars3.githubusercontent.com/u/13142323?v=4',
-  },
-];
+
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
@@ -191,10 +139,34 @@ const Item = ({fullName, description, language, stargazersCount, forksCount, rev
 );
 
 const RepositoryList = () => {
+
+// GET WITH API REST
+//  const {repositories} = useRepositories();
+//  console.log('los repositorios son', repositories)
+
+
+// GET WITH GRAPHQL
+const { repositories, loading, error } = useRepositoriesGql();
+
+if (loading) return <Text>Loading...</Text>;
+if(error) return <Text>Error</Text>;
+
+console.log('repositories con gql trae', repositories)
+
+
+
+
+
+  // Get the nodes from the edges array
+  const repositoryNodes = repositories
+    ? repositories.edges.map(edge => edge.node)
+    : [];
+
+
   return (
     <SafeAreaView style={styles.container}>
     <FlatList
-      data={repositories}
+      data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({item}) => 
       <Item 
